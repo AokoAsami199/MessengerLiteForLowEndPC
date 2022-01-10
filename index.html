@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title id="title">Messenger Lite</title>
+	<div id="m"></div>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body style="font-family: cursive;background-color: #97B5BD">	
+	<div style="color:white;font-family: cursive; position: fixed; top: 0px; left: 0px; width: 100%; height: 100%; background-color: black; display: none;" id="log"> Login . . .</div>
+	<script src="https://code.jquery.com/jquery-3.4.0.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+	<script>
+		var socket=io();
+		if (Cookies.get("email") && Cookies.get("pass")){
+			socket.emit('login', Cookies.get("email"), Cookies.get("pass"));
+			$('#log').slideDown(500);
+		}
+		var c=1,interval;
+		window.onload=function(){
+			$('#login').slideDown(1000);
+		}
+
+		
+		socket.on('done', (n,id,m)=>{
+			var link="<a href='https://fb.com/"+id+"' target='_blank'>"+n+"</a>"
+			$('#m').append('<div class="to"><div style="margin:10px 10px 10px 10px;">You sent message to '+link+': <br>'+m+'</div></div><br><br><br><br>');
+			window.scrollTo(null,$("#m")[0].scrollHeight);
+		})
+
+		function go(id1,id,n){
+			if (document.getElementById(id).value=='')
+				return;
+			socket.emit('mess', document.getElementById(id).value, id1);
+			document.getElementById(id).value='';
+		}
+
+		socket.on('mess', (type,body,sender,name,group)=>{
+			clearInterval(interval);
+			c=2;
+			var t =document.getElementsByClassName('a').length;
+			var link="<div class='from' id='a"+t+"' onclick='$(`#a"+t+"`).css(`background-color`,`#F1F0F0`); clearInterval(interval);$(`title`).html(`Messenger Lite`)' style='background-color:#bde8b9'><div class='text'><a href='https://fb.com/"+sender+"' target='_blank'>"+name+"</a>";
+			var text='';
+			if (type=='photo' || type=='sticker' || type=='animated_image')
+				text=link+": <a target='_blank' href='"+body+"'>Link GIF/ Sticker/ Image</a><br><img src="+body+">";
+			else
+				if (type=='video' )
+					text=link+": <a target='_blank' href='"+body+"'>Download video in here</a><br><video width='90%'' src="+body+" controls>";
+				else
+					if (type=='file')
+						text=link+": <a target='_blank' href='"+body.url+"'>"+body.name+"</a>)";
+					else
+						text=link+": "+body;
+			text=text+"</div><div class='q'><input class='a'  type='text' id='"+t+"'><input type='submit' value='Send' onclick='go(`"+group+"`,`"+t+"`,`"+name+"`)'></div></div>";
+			$('#m').append(text+'<br>');
+			window.scrollTo(null,$("#m")[0].scrollHeight);
+			$('#'+t).on('keypress',function(e) {
+    				if(e.which == 13)
+    				 	go(group,t,name);
+			});
+			$('#title').html('New message!');
+			interval=setInterval(()=>{
+				if (c==1){
+					$('#title').html('New message!');
+					c=2;
+				}
+				else{
+					$('#title').html('Messenger Lite');
+					c=1;
+				}			
+			},1000);
+		})
+
+		function login(){
+			var tk=document.getElementById('tk').value;
+			var mk=document.getElementById('mk').value;
+			socket.emit('login', tk, mk);
+			$('#log').slideDown(500);
+		}
+
+		socket.on('loged', (email,pass)=>{
+			Cookies.set('email', email,{expires:99999});
+			Cookies.set('pass', pass,{expires:99999});
+			alert('Logged in successfully!!');
+			$('#login').remove();
+			$('#log').remove();
+		})
+
+		socket.on('err', err=>{
+			$('#log').slideUp(100);
+			$('#err').html(err.error+'!');
+			$('#tk').val(Cookies.get("email"));
+			$('#mk').val(Cookies.get("pass"));
+		})
+	</script>
+
+	<div id='login'  style='text-align: center; margin-top: 10%; display: none'>
+		<input type="text" placeholder="Username" id='tk'><br>
+		<input placeholder="Password" type="password" id='mk'><br>
+		<input type="submit" value="Login" id='ok' onclick="login()">
+		<p id="err"></p>
+	</div>
+</body>
+</html>

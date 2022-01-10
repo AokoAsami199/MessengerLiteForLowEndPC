@@ -1,0 +1,17 @@
+{
+  "name": "facebook",
+  "version": "1.0.0",
+  "description": "Messenger Lite Remake By Aoko (NodeJS)",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "AokoAsami199",
+  "license": "ISC (I don't know lol)",
+  "dependencies": {
+    "express": "^4.16.4",
+    "facebook-chat-api": "^1.6.1",
+    "package": "^1.0.1",
+    "socket.io": "^2.2.0"
+  }
+}

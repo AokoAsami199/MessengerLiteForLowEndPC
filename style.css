@@ -1,0 +1,75 @@
+
+#login input[type="text"],input[type="password"]{
+  border-radius:  10px 10px 10px 10px;
+  width: 40%;
+  height: 30px; 
+  margin-top:5px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-family: Time New Roman;
+  border: double;
+}
+.a{
+    border-radius:  10px 10px 10px 10px;
+    height: 30px; 
+    margin-left: 10px;
+    margin-top:5px;
+    margin-bottom: 10px;
+    font-family: Time New Roman;
+    border: double;
+}
+
+input[type="submit"]{
+  width: 60px;
+  height: 40px;
+  color: black;
+  background-color: #81db88;
+  border-radius:  10px 10px 10px 10px;
+  border: double;
+  transition: 0.1s;
+  margin: 10px 10px 10px 10px;
+}
+
+input[type="submit"]:hover{
+  background-color: #64af6a;
+  cursor: pointer;
+}
+
+#m .from{
+  background-color: #F1F0F0;
+  display: inline-block;
+  margin: 10px 10px 10px 10px;
+  border-color: #F1F0F0;
+  border: solid;
+  border-radius: 0px 20px 20px 20px;
+}
+
+.q{
+    float: right;
+    font-family: Time New Roman;
+}
+
+.text{
+  margin: 10px 10px 10px 10px;
+  vertical-align: middle;
+}
+
+video{
+  margin: 10px 10px 10px 10px;
+  display: block;
+}
+
+.a{
+  font-size: 16px;
+  font-weight: bolder;
+}
+
+.to{
+  background-color:#3578E5;
+  float: right;
+  display: inline-block;
+  margin: 10px 10px 10px 10px;
+  border-color: #3578E5;
+  border: solid;
+  border-radius: 20px 0px 20px 20px;
+}
